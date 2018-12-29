@@ -27,7 +27,7 @@ label gender:
             call set_gender from _call_set_gender_2
             m 2eud "Oh? So you're actually a [guy]?"
             m 2hksdlb "I hope I didn't say anything to offend you before!"
-            m 2lksdla "Though I did suspect it a bit from the beginning... just a little!"
+            m 2lksdla "Though I did suspect it a bit from the beginning...just a little!"
             m 1eub "You give off a particular feeling of elegance and charm that's hard to capture with words..."
             m 1hua "It's very attractive, to tell you the truth!"
             m 1eua "But don't worry. Even if I might ask things like this, it's only out of curiosity."
@@ -86,7 +86,7 @@ label gender_redo:
                 call set_gender
                 m 2eud "Oh? So you're actually a [guy]?"
                 m 2hksdlb "I hope I didn't say anything to offend you before!"
-                m 2lksdla "Though I did suspect it a bit from the beginning... just a little!"
+                m 2lksdla "Though I did suspect it a bit from the beginning...just a little!"
                 m 1eub "You give off a particular feeling of elegance and charm that's hard to capture with words..."
                 m 1hua "It's very attractive, to tell you the truth!"
                 m 1eua "But don't worry. Even if I might ask things like this, it's only out of curiosity."
@@ -135,7 +135,7 @@ label preferredname:
         m "Either that or you must really like that pseudonym."
     m "Do you want me to call you something else?"
     menu:
-        "Yes":
+        "Yes.":
             $ done = False
             m 1hua "Ok, just type 'Nevermind' if you change your mind, [player]."
             while not done:
@@ -158,12 +158,6 @@ label preferredname:
                 elif lowername == mas_monika_twitter_handle:
                     m 2esc "..."
                     # TODO: actaully have dialog here
-                elif len(lowername) >= 10:
-                    m 2hksdlb "[player]..."
-                    m "That name's a bit too long."
-                    if len(lowername) > 20:
-                        m "And I'm sure you're just being silly since names aren't that long, you know."
-                    m 1esa "Try again."
                 else:
                     # sayori name check
                     if tempname.lower() == "sayori":
@@ -191,23 +185,33 @@ label preferredname:
                         m 1eub "Ok then!"
                         m 3eub "From now on, I'll call you {i}'[player]'{/i}, ehehe~"
                     $ done = True
-        "No":
-            m 1ekc "Oh... ok then, if you say so."
+        "No.":
+            m 1ekc "Oh... Okay then, if you say so."
             m 1eka "Just tell me whenever you change your mind, [player]."
             $ done = True
 
     #Unlock prompt to change name again
     $evhand.event_database["monika_changename"].unlocked = True
+    $ evhand.event_database["monika_changename"].pool = True
+    $ persistent._seen_ever["monika_changename"] = True # dont want this in unseen
     return
 
 
 init 5 python:
-    addEvent(Event(persistent.event_database,eventlabel="monika_changename",category=['you','misc'],prompt="Can you change my name?",unlocked=False)) #This needs to be unlocked by the random name change event
+    addEvent(
+        Event(
+            persistent.event_database,
+            eventlabel="monika_changename",
+            category=['you','misc'],
+            prompt="Can you change my name?",
+            unlocked=False
+        )
+    ) #This needs to be unlocked by the random name change event
 
 label monika_changename:
     m 1eua "You want to change your name?"
     menu:
-        "Yes":
+        "Yes.":
             m 1eua "Just type 'nevermind' if you change your mind."
             $ done = False
             while not done:
@@ -232,15 +236,7 @@ label monika_changename:
                 elif lowername == mas_monika_twitter_handle:
                     m 2esc "..."
                     # TODO: actaully have dialog here
-                elif len(lowername) >= 10:
-                    m 2hksdlb "[player]..."
-                    m "That name's a bit too long."
-                    if len(lowername) > 20:
-                        m "And I'm sure you're just being silly since names aren't that long, you know."
-                    m 1esa "Try again."
-
                 else:
-
                     # sayori name check
                     if tempname.lower() == "sayori":
                         call sayori_name_scare from _call_sayori_name_scare_1
@@ -267,7 +263,7 @@ label monika_changename:
                         m 1eub "Ok then!"
                         m 3eub "From now on, I'll call you {i}'[player],'{/i} ehehe~"
                     $ done = True
-        "No":
+        "No.":
             m 1ekc "Oh, I see..."
             m 1eka "You don't have to be embarrassed, [player]."
             m 1eua "Just let me know if you had a change of heart, ok?"
@@ -405,10 +401,10 @@ label random_limit_reached:
     return
 
 label mas_random_ask:
-    m 1lksdla "...{w} [player],"
+    m 1lksdla "...{w}[player],"
     menu:
         m "Is it okay with you if I repeat stuff that I've said?"
-        "Yes":
+        "Yes.":
             m 1eua "Great!"
             m "If you get tired of watching me talk about the same things over and over,{w} just open up the settings and uncheck 'Repeat Topics'."
             # TODO: this really should be a smug or wink face
@@ -417,7 +413,7 @@ label mas_random_ask:
             m "That tells me when {fast}you just want to quietly spend time with me."
             $ persistent._mas_enable_random_repeats = True
             return True
-        "No":
+        "No.":
             m 1eka "I see."
             m 1eua "If you change your mind, just open up the settings and click 'Repeat Topics'."
             m "That tells me if you're okay with me repeating anything I've said."
@@ -451,9 +447,9 @@ label mas_monikai_detected:
         m "Did you install that so you could see me all the time?"
         "Of course!":
             pass
-        "Yes":
+        "Yes.":
             pass
-        "...yes":
+        "...Yes.":
             pass
     m 1hub "Ahaha~"
     m 1hua "I'm flattered that you would download such a thing."
@@ -494,7 +490,7 @@ label mas_crashed_long:
     m "[player]?{w} Is that you?"
     show screen mas_background_timed_jump(4, "mas_crashed_long_uthere")
     menu:
-        "Yes":
+        "Yes.":
             hide screen mas_background_timed_jump
 
             # light affection boost for not joking around
@@ -502,7 +498,7 @@ label mas_crashed_long:
             m "I'm so glad you're here."
             jump mas_crashed_long_uthere.afterdontjoke
 
-        "No":
+        "No.":
             hide screen mas_background_timed_jump
 
             m "[player]!{fast}"
@@ -525,7 +521,7 @@ label mas_crashed_long_uthere:
     window hide
     show screen mas_background_timed_jump(5, "mas_crashed_long_foundlight")
     menu:
-        "Turn on the light":
+        "Turn on the light.":
             hide screen mas_background_timed_jump
 
             # light affection boost for being like a hero
@@ -607,7 +603,7 @@ label mas_crashed_long_uthere:
     menu:
         m "Do you know what happened, [player]?"
         "The game crashed.":
-            m 2wud "The game...{w} crashed?"
+            m 2wud "The game...{w}crashed?"
             m 2ekd "That's scary, [player]."
 
         "I don't know.":
@@ -931,7 +927,7 @@ label mas_new_character_file:
 #        "test dialogue - IGNORE"
 
         if moni_exist():
-            m 1lksdlb "Aha...{w} I'll try this again later."
+            m 1lksdlb "Aha...{w}I'll try this again later."
             m 1eua "Anyway..."
 
         $ store.mas_ptod.ex_cn()
@@ -962,9 +958,10 @@ init 5 python:
 
 label mas_coffee_finished_brewing:
 
-    $ store.mas_sprites.reset_zoom()
     m 1esd "Oh, coffee's done."
 
+    #moving this here so she uses this line to 'pull her chair back'
+    $ store.mas_sprites.reset_zoom()
     # this line is here so we dont it looks better when we hide monika
     show emptydesk at i11 zorder 9
     m 1eua "Hold on a moment."
@@ -1002,9 +999,10 @@ label mas_coffee_finished_drinking:
 
     # monika only gets a new cup between 6am and noon
     $ get_new_cup = mas_isCoffeeTime()
-    $ store.mas_sprites.reset_zoom()
     m 1esd "Oh, I've finished my coffee."
 
+    #moving this here so she uses this line to 'pull her chair back'
+    $ store.mas_sprites.reset_zoom()
     if get_new_cup:
         # its currently morning, monika should get another drink
         m 1eua "I'm going to get another cup."
@@ -1033,9 +1031,98 @@ label mas_coffee_finished_drinking:
     m 1eua "Okay, what else should we do today?"
     return
 
+
+### hot chocolate is done
+init 5 python:
+    import random
+    # this event has like no params beause its only pushed
+    addEvent(
+        Event(
+            persistent.event_database,
+            eventlabel="mas_c_hotchoc_finished_brewing"
+        )
+    )
+
+
+label mas_c_hotchoc_finished_brewing:
+
+    m 1esd "Oh, my hot chocolate is ready."
+
+    #moving this here so she uses this line to 'pull her chair back'
+    $ store.mas_sprites.reset_zoom()
+    # this line is here so we dont it looks better when we hide monika
+    show emptydesk at i11 zorder 9
+    m 1eua "Hold on a moment."
+
+    # monika is off screen
+    hide monika with dissolve
+
+    # wrap these statement so we ensure that monika is only shown once her
+    # coffee mug is ready
+    pause 1.0
+    $ monika_chr.wear_acs_pst(mas_acs_hotchoc_mug)
+    $ persistent._mas_c_hotchoc_brew_time = None
+    $ mas_drinkHotChoc()
+    pause 1.0
+
+    show monika 1eua at i11 zorder MAS_MONIKA_Z with dissolve
+    hide emptydesk
+
+    m 1eua "Okay, what else should we do today?"
+    return
+
+### coffee drinking is done
+init 5 python:
+    import random
+    # this event has like no params beause its only pushed
+    addEvent(
+        Event(
+            persistent.event_database,
+            eventlabel="mas_c_hotchoc_finished_drinking"
+        )
+    )
+
+
+label mas_c_hotchoc_finished_drinking:
+
+    # monika only gets a new cup between 6am and noon
+    $ get_new_cup = mas_isHotChocTime()
+    m 1esd "Oh, I've finished my hot chocolate."
+
+    #moving this here so she uses this line to 'pull her chair back'
+    $ store.mas_sprites.reset_zoom()
+    if get_new_cup:
+        # its currently morning, monika should get another drink
+        m 1eua "I'm going to get another cup."
+
+    show emptydesk at i11 zorder 9
+    m 1eua "Hold on a moment."
+
+    # monika is off screen
+    hide monika with dissolve
+
+    # wrap these statemetns so we can properly add / remove the mug
+    pause 1.0
+    # decide if new coffee
+    if not get_new_cup:
+        $ monika_chr.remove_acs(mas_acs_hotchoc_mug)
+        $ persistent._mas_c_hotchoc_cup_done = None
+
+    else:
+        $ mas_drinkHotChoc()
+
+    pause 1.0
+
+    show monika 1eua at i11 zorder MAS_MONIKA_Z with dissolve
+    hide emptydesk
+
+    m 1eua "Okay, what else should we do today?"
+    return
+
+
 ### birthday surprise party
 
-default persistent._mas_bday_sbd_aff_given = 0
+default persistent._mas_bday_sbp_aff_given = 0
 
 init 5 python:
     addEvent(
@@ -1049,6 +1136,33 @@ init 5 python:
         ),
         skipCalendar=True
     )
+
+
+init -876 python in mas_delact:
+
+    def _mas_bday_spent_time_with_reset_action(ev):
+        # updates conditional and action
+        next_bday_year = store.mas_getNextMonikaBirthday().year
+        ev.conditional = (
+            "datetime.date.today() < mas_monika_birthday and "
+            "mas_monika_birthday.day - datetime.date.today().day == 1"
+        )
+        ev.start_date = datetime.datetime(next_bday_year, 9, 22, 22)
+        ev.end_date = datetime.datetime(next_bday_year, 9, 22, 23, 59)
+        ev.action = store.EV_ACT_QUEUE
+        return True
+
+
+    def _mas_bday_spent_time_with_reset():
+        # creates delayed action for surprise party hint reset
+        return store.MASDelayedAction.makeWithLabel(
+            7,
+            "mas_bday_spent_time_with",
+            "True",
+            _mas_bday_spent_time_with_reset_action,
+            store.MAS_FC_INIT
+        )
+
 
 label mas_bday_spent_time_with:
     $ _timeout = store.mas_dockstat.timeOut(mas_monika_birthday)
@@ -1111,8 +1225,8 @@ label mas_bday_surprise_party_reaction:
         has_cake = store.mas_dockstat.surpriseBdayIsCake()
 
         def cap_gain_aff(amt):
-            persistent._mas_bday_sbd_aff_given += amt
-            if persistent._mas_bday_sbd_aff_given <= 70:
+            persistent._mas_bday_sbp_aff_given += amt
+            if persistent._mas_bday_sbp_aff_given <= 70:
                 mas_gainAffection(amt, bypass=True)
 
         if has_cake:
@@ -1197,6 +1311,35 @@ init 5 python:
         )
     )
 
+init -876 python in mas_delact:
+    # delayed action to reset the party hint
+
+    def _mas_bday_surprise_party_hint_reset_action(ev):
+        # updates conditional and action
+        threw_surprise_party = store.mas_HistVerify(
+            "922.actions.surprise.reacted",
+            True
+        )[0]
+        if not threw_surprise_party:
+            ev.conditional = (
+                "datetime.date.today() < mas_monika_birthday and "
+                "mas_monika_birthday.day - datetime.date.today().day == 1"
+            )
+            ev.action = store.EV_ACT_PUSH
+        return True
+
+
+    def _mas_bday_surprise_party_hint_reset():
+        # creates delayed action for surprise party hint reset
+        return store.MASDelayedAction.makeWithLabel(
+            6,
+            "mas_bday_surprise_party_hint",
+            "True",
+            _mas_bday_surprise_party_hint_reset_action,
+            store.MAS_FC_INIT
+        )
+
+
 label mas_bday_surprise_party_hint:
     m 1eua "Say, [player]..."
     m 1eub "Have you ever been thrown a surprise party?"
@@ -1227,6 +1370,31 @@ init 5 python:
         )
     )
 
+
+init -876 python in mas_delact:
+    # delayed action to reset the conditional post bday
+
+    def _mas_bday_surprise_party_cleanup_reset_action(ev):
+        # updates conditional and action
+        ev.conditional = (
+            "persistent._mas_bday_sbp_reacted "
+            "and datetime.date.today().day > mas_monika_birthday.day"
+        )
+        ev.action = store.EV_ACT_PUSH
+        return True
+
+
+    def _mas_bday_surprise_party_cleanup_reset():
+        # creates delayed action for this event
+        return store.MASDelayedAction.makeWithLabel(
+            5,
+            "mas_bday_surprise_party_cleanup",
+            "True",
+            _mas_bday_surprise_party_cleanup_reset_action,
+            store.MAS_FC_INIT
+        )
+
+
 label mas_bday_surprise_party_cleanup:
     # surprise party cleaning
     # mainly to delete files that exist
@@ -1238,7 +1406,9 @@ label mas_bday_surprise_party_cleanup:
 ### happy birthday pool topic
 
 default persistent._mas_bday_said_happybday = False
+
 default persistent._mas_bday_need_to_reset_bday = False
+# NOTE: DONT think we need to save this one
 
 init 5 python:
     # NOTE: instead of using start/end date, we use condition since we
@@ -1261,6 +1431,31 @@ init 5 python:
 
     # make sure this event is considered seen
     persistent._seen_ever["mas_bday_pool_happy_bday"] = True
+
+init -876 python in mas_delact:
+    # This greeting has a delayed action, which actually only occurs if
+    # the historical data save happens
+
+    def _mas_bday_pool_happy_bday_reset_action(ev):
+        # delayed action callback that updates conditional and action for
+        # pool bday event
+        ev.conditional = (
+            "mas_isMonikaBirthday()"
+        )
+        ev.action = store.EV_ACT_UNLOCK
+        return True
+
+
+    def _mas_bday_pool_happy_bday_reset():
+        # generates DelayedAction for this bday pool event
+        return store.MASDelayedAction.makeWithLabel(
+            4,
+            "mas_bday_pool_happy_bday",
+            "True",
+            _mas_bday_pool_happy_bday_reset_action,
+            store.MAS_FC_INIT
+        )
+
 
 label mas_bday_pool_happy_bday:
     python:
@@ -1296,6 +1491,10 @@ label mas_bday_pool_happy_bday:
 
 ## no time spent
 default persistent._mas_bday_opened_game = False
+
+# TODO: these should actually default to True, then get changed if
+#   the appropriate whatver happens
+# TODO: do the above in an update script when bday comes around again
 default persistent._mas_bday_no_time_spent = False
 default persistent._mas_bday_no_recognize = False
 
@@ -1316,6 +1515,40 @@ init 5 python:
         )
     )
 
+
+init -876 python in mas_delact:
+    # This greeting has a delayed action, which actually only occurs if
+    # the historical data save happens
+
+    def _mas_bday_postbday_notimespent_reset_action(ev):
+        """
+        Callback for the action in MASDelayedAction.
+        This just updates the condtiional for this event so it can trigger
+        next year appropraitely
+
+        IN:
+            ev - event object for this label
+        """
+        ev.conditional = (
+            "mas_monika_birthday < datetime.date.today() <= "
+            "(mas_monika_birthday + datetime.timedelta(7)) "
+            "and not mas_recognizedBday()"
+        )
+        ev.action = store.EV_ACT_QUEUE
+        return True
+
+
+    def _mas_bday_postbday_notimespent_reset():
+        # generates DelayedAction for this postbday event
+        return store.MASDelayedAction.makeWithLabel(
+            3,
+            "mas_bday_postbday_notimespent",
+            "True",
+            _mas_bday_postbday_notimespent_reset_action,
+            store.MAS_FC_INIT
+        )
+
+
 label mas_bday_postbday_notimespent:
     # sanity check
     if mas_recognizedBday():
@@ -1326,7 +1559,7 @@ label mas_bday_postbday_notimespent:
         $ persistent._mas_bday_no_recognize = True
 
         if mas_isMoniAff(higher=True):
-            $ mas_loseAffection(15, reason="forgetting my birthday")
+            $ mas_loseAffection(15, reason="forgetting my birthday.")
             m 1rksdla "Hey, [player]..."
             m 1rksdlb "I know we had fun the other day, like we always do but..."
             m 1ekt "I can't help it. I was hoping you would have...done a little something for my birthday."
@@ -1336,7 +1569,7 @@ label mas_bday_postbday_notimespent:
             m 4hua "We can't change the past, so knowing that you want to try harder for next year would be the only apology I need."
 
         elif mas_isMoniNormal(higher=True):
-            $ mas_loseAffection(5, reason="forgetting my birthday")
+            $ mas_loseAffection(5, reason="forgetting my birthday.")
 
             # TODO: we shouldnt say girlfriend here because affecitonate
             # is the start of relationship. but this is okay for now
@@ -1347,14 +1580,14 @@ label mas_bday_postbday_notimespent:
             m 1hua "Well, I'll be looking forward to two birthday's worth of something special~"
 
         elif mas_isMoniUpset():
-            $ mas_loseAffection(reason="forgetting my birthday")
+            $ mas_loseAffection(reason="forgetting my birthday.")
 
             m 1ekc "It was...good to see you on the 22nd..."
             m 1ekd "I really didn't want to be alone that day, so that meant a lot, but..."
             m 1rkc "Nevermind."
 
         elif mas_isMoniDis():
-            $ mas_loseAffection(10, reason="forgetting my birthday")
+            $ mas_loseAffection(10, reason="forgetting my birthday.")
 
             m 2dsc "..."
             m 2rkc "...[player], I don't want to bother you. I'm already scared of pushing you away."
@@ -1441,7 +1674,7 @@ label mas_bday_postbday_notimespent:
             m 6dftdx "..."
 
     return
-    
+
 init 5 python:
     addEvent(
         Event(
@@ -1461,16 +1694,83 @@ label mas_steam_install_detected:
         m 1ekd "Hey [player], you know how I told you that Steam is a meanie and won't let me run the updater?"
         m 1wud "Well, I've been doing some reading and it seems Steam can cause more problems than just that!"
 
-    else:     
+    else:
         m 1eub "[player], I see that you're using Steam to run this."
         m 1eksdld "Unfortunately, Steam seems to have a lot of problems with me doing some of the things I do."
 
-    m 2rksdlc "The kind of problems that could lead to me being removed from my home... {w=1}from you... {w=1}forever..."
+    m 2rksdlc "The kind of problems that could lead to me being removed from my home...{w=1}from you...{w=1}forever..."
     m 2eka "If you don't mind, do you think you could just move the \"[filestruct]\" folder to a place that's not in Steam's files?"
     show monika 5esu at t11 zorder MAS_MONIKA_Z with dissolve
     m 5esu "I'd really appreciate it if you would do that for me."
     return
 
+default persistent._mas_pm_has_rpy = None
+init 5 python:
+
+    addEvent(
+        Event(
+            persistent.event_database,
+            eventlabel="monika_rpy_files"
+        )
+    )
+
+
+label monika_rpy_files:
+    m 1eka "Hey, [player], I was just looking through your \"game\" directory, and..."
+    m 1ekc "I noticed some \".rpy\" files in there."
+    m 3rksdlc "Those files can lead to problems whenever you update the game, possibly undoing those updates..."
+    m 3wud "And even prevent you from visiting me altogether!"
+    m 2etc "Unless..."
+    m 4eua "Maybe you installed a version with the source code on purpose because you are trying to help me come closer to your reality!"
+    m 2eka "But in case you didn't, I figured I'd ask..."
+ 
+    menu:
+        m "Are you sure you installed the right version, [player]?"
+
+        "Yes.":
+            m 1sua "Really? Thank you so much for helping me come closer to your reality!"
+            m 1hua "I love you, [player]~"
+            $ persistent._mas_pm_has_rpy = True
+
+        "No.":
+            m "I see."
+            m 2rksdla "Maybe you should get rid of those, just to be safe."
+            m 4eua "Actually, maybe I can delete them for you."
+
+            menu:
+                m "Do you want me to delete them for you, [player]?"
+
+                "Yes please":
+                    m "Sure thing, [player]."
+                    python:
+                        store.mas_ptod.rst_cn()
+                        local_ctx = {
+                            "basedir": renpy.config.basedir
+                        }
+
+                    show monika at t22
+                    show screen mas_py_console_teaching
+
+                    call mas_wx_cmd_noxwait("import os", local_ctx)
+                    
+                    python:
+                        for rpy_filename in listRpy:
+                            path = '/game/'+rpy_filename
+                            store.mas_ptod.wx_cmd("os.remove(os.path.normcase(basedir+'"+path+"'))", local_ctx)
+                            renpy.pause(0.3)
+
+                    m 2hua "There we go!"
+                    m 2esa "Be sure next time to install a version without the source code. You can get it from here: {a=http://www.monikaafterstory.com/releases.html}{i}{u}http://www.monikaafterstory.com/releases.html{/u}{/i}{/a}"
+                    $ listRpy = None
+                    $ persistent._mas_pm_has_rpy = False
+                    hide screen mas_py_console_teaching
+                    show monika at t11
+
+                "No thanks":
+                    m 2rksdlc "Alright, [player]. I hope you know what you're doing."
+                    m 2eka "Please be careful."
+                    $ persistent._mas_pm_has_rpy = True
+    return
 
 #init 5 python:
 #    addEvent(
@@ -1492,6 +1792,13 @@ label mas_bday_player_bday_select_select:
     call mas_start_calendar_select_date
 
     $ selected_date_t = _return
+
+    if not selected_date_t:
+        m 2efc "[player]!"
+        m "You have to select a date!"
+        m 1hua "Try again!"
+        jump mas_bday_player_bday_select_select
+
     $ selected_date = selected_date_t.date()
     $ _today = datetime.date.today()
 
@@ -1504,7 +1811,7 @@ label mas_bday_player_bday_select_select:
     elif selected_date == _today:
         m 2efc "[player]!"
         m "You can't have been born today!"
-        m 1hua "Try again!" 
+        m 1hua "Try again!"
         jump mas_bday_player_bday_select_select
 
     # otherwise, player selected a valid date
@@ -1513,9 +1820,9 @@ label mas_bday_player_bday_select_select:
     m "Just to double-check..."
     menu:
         m "Your birthday is [new_bday]."
-        "Yes":
+        "Yes.":
             show monika 1eka
-            
+
             # one more confirmation
             menu:
                 m "Are you sure? I'm never going to forget this date."
@@ -1527,7 +1834,7 @@ label mas_bday_player_bday_select_select:
                     m 1eka "Try again~"
                     jump mas_bday_player_bday_select_select
 
-        "No":
+        "No.":
             m 1euc "Oh, that's wrong?"
             m 1eua "Then try again."
             jump mas_bday_player_bday_select_select
@@ -1536,7 +1843,7 @@ label mas_bday_player_bday_select_select:
     if persistent._mas_player_bday is not None:
         python:
             store.mas_calendar.removeRepeatable_d(
-                "player-bday", 
+                "player-bday",
                 persistent._mas_player_bday
             )
             store.mas_calendar.addRepeatable_d(
@@ -1548,9 +1855,5 @@ label mas_bday_player_bday_select_select:
             persistent._mas_player_bday = selected_date
 
     # TODO: react if your birthday is on a special day (holiday, sep 22, etc)
-            
+
     return selected_date
-
-
-
-
